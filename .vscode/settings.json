@@ -1,0 +1,11 @@
+{
+  "python.analysis.extraPaths": [
+    "./DelayShield/src",
+    "./src"
+  ],
+  "python.autoComplete.extraPaths": [
+    "./DelayShield/src",
+    "./src"
+  ],
+  "python.analysis.typeCheckingMode": "basic"
+}

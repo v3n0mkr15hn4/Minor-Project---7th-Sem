@@ -1,0 +1,7 @@
+{
+  "extraPaths": ["src"],
+  "include": ["src", "dashboard"],
+  "exclude": ["data", "models", "reports", "notebooks", "**/__pycache__"],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": "warning"
+}

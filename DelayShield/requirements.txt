@@ -1,0 +1,12 @@
+# DelayShield - tested with Python 3.13 on Windows
+pandas>=2.2
+numpy>=2.0
+scikit-learn>=1.5
+xgboost>=2.1
+shap>=0.46
+streamlit>=1.40
+plotly>=5.22
+joblib>=1.4
+matplotlib>=3.8
+pyarrow>=16.0
+tabulate>=0.9

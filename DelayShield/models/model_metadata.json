@@ -1,0 +1,378 @@
+{
+  "trained_at": "2026-08-20T16:00:24",
+  "dataset": "Brazilian E-Commerce Public Dataset by Olist (raw, 9 CSVs)",
+  "rows_total": 96470,
+  "target_definition": "delivery_delay = order_delivered_customer_date > order_estimated_delivery_date",
+  "positive_rate_overall": 0.08112366538820359,
+  "split": {
+    "type": "chronological",
+    "val_start": "2018-01-01",
+    "test_start": "2018-04-01",
+    "train_rows": 43693,
+    "val_rows": 20627,
+    "test_rows": 32150,
+    "train_range": [
+      "2016-09-15 12:16:38",
+      "2017-12-31 23:29:31"
+    ],
+    "val_range": [
+      "2018-01-01 02:48:41",
+      "2018-03-31 23:54:10"
+    ],
+    "test_range": [
+      "2018-04-01 00:11:32",
+      "2018-08-29 15:00:37"
+    ],
+    "train_positive_rate": 0.06596022246126382,
+    "val_positive_rate": 0.14582828331798128,
+    "test_positive_rate": 0.06021772939346812
+  },
+  "selected_model": "random_forest_threshold_only",
+  "selection_criterion": "highest validation PR-AUC",
+  "threshold_f1": 0.13,
+  "threshold_cost_optimal": 0.09,
+  "test_metrics_at_f1_threshold": {
+    "threshold": 0.13,
+    "roc_auc": 0.7260788247006067,
+    "pr_auc": 0.1346502299309719,
+    "precision": 0.10614730046948356,
+    "recall": 0.7474173553719008,
+    "f1": 0.18589414182939362,
+    "brier": 0.05906118116273932,
+    "confusion_matrix": {
+      "tn": 18029,
+      "fp": 12185,
+      "fn": 489,
+      "tp": 1447
+    },
+    "positive_rate": 0.06021772939346812
+  },
+  "test_metrics_at_cost_threshold": {
+    "threshold": 0.09,
+    "roc_auc": 0.7260788247006067,
+    "pr_auc": 0.1346502299309719,
+    "precision": 0.06798632355587547,
+    "recall": 0.9757231404958677,
+    "f1": 0.12711550755358164,
+    "brier": 0.05906118116273932,
+    "confusion_matrix": {
+      "tn": 4318,
+      "fp": 25896,
+      "fn": 47,
+      "tp": 1889
+    },
+    "positive_rate": 0.06021772939346812
+  },
+  "model_comparison": {
+    "logistic_regression_weighted": {
+      "validation": {
+        "threshold": 0.32,
+        "roc_auc": 0.7009437836390358,
+        "pr_auc": 0.2836121707862537,
+        "precision": 0.2522496371552975,
+        "recall": 0.5777925531914894,
+        "f1": 0.3511820569812083,
+        "brier": 0.13608778576446112,
+        "confusion_matrix": {
+          "tn": 12467,
+          "fp": 5152,
+          "fn": 1270,
+          "tp": 1738
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.32,
+      "threshold_cost": 0.24,
+      "fit_seconds": 4.7,
+      "test": {
+        "threshold": 0.32,
+        "roc_auc": 0.7552196535238713,
+        "pr_auc": 0.14909909157754533,
+        "precision": 0.15683282468633436,
+        "recall": 0.4777892561983471,
+        "f1": 0.23615011488383966,
+        "brier": 0.08108827120783439,
+        "confusion_matrix": {
+          "tn": 25241,
+          "fp": 4973,
+          "fn": 1011,
+          "tp": 925
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    },
+    "random_forest_weighted": {
+      "validation": {
+        "threshold": 0.39,
+        "roc_auc": 0.7067774052853968,
+        "pr_auc": 0.2990608579689225,
+        "precision": 0.30019079923680303,
+        "recall": 0.47074468085106386,
+        "f1": 0.3666019417475728,
+        "brier": 0.1488871351825236,
+        "confusion_matrix": {
+          "tn": 14318,
+          "fp": 3301,
+          "fn": 1592,
+          "tp": 1416
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.39,
+      "threshold_cost": 0.31,
+      "fit_seconds": 8.0,
+      "test": {
+        "threshold": 0.39,
+        "roc_auc": 0.6802964439067435,
+        "pr_auc": 0.1139504599871532,
+        "precision": 0.09774633123689727,
+        "recall": 0.577995867768595,
+        "f1": 0.1672145845786013,
+        "brier": 0.15026989707507193,
+        "confusion_matrix": {
+          "tn": 19885,
+          "fp": 10329,
+          "fn": 817,
+          "tp": 1119
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    },
+    "xgboost_weighted": {
+      "validation": {
+        "threshold": 0.47,
+        "roc_auc": 0.7107321618767458,
+        "pr_auc": 0.2885755982812659,
+        "precision": 0.2753429240548678,
+        "recall": 0.5472074468085106,
+        "f1": 0.36634765190296015,
+        "brier": 0.1711585968732834,
+        "confusion_matrix": {
+          "tn": 13287,
+          "fp": 4332,
+          "fn": 1362,
+          "tp": 1646
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.47,
+      "threshold_cost": 0.37,
+      "fit_seconds": 2.8,
+      "test": {
+        "threshold": 0.47,
+        "roc_auc": 0.6808230849280641,
+        "pr_auc": 0.11201894506967981,
+        "precision": 0.09880390835579515,
+        "recall": 0.6058884297520661,
+        "f1": 0.16990150637311704,
+        "brier": 0.1923753172159195,
+        "confusion_matrix": {
+          "tn": 19515,
+          "fp": 10699,
+          "fn": 763,
+          "tp": 1173
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    },
+    "logistic_regression_threshold_only": {
+      "validation": {
+        "threshold": 0.05,
+        "roc_auc": 0.7189892167908678,
+        "pr_auc": 0.31054458759555925,
+        "precision": 0.43047337278106507,
+        "recall": 0.1934840425531915,
+        "f1": 0.26697247706422017,
+        "brier": 0.1367617306855995,
+        "confusion_matrix": {
+          "tn": 16849,
+          "fp": 770,
+          "fn": 2426,
+          "tp": 582
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.05,
+      "threshold_cost": 0.05,
+      "fit_seconds": 2.6,
+      "test": {
+        "threshold": 0.05,
+        "roc_auc": 0.7541437538943963,
+        "pr_auc": 0.14422506751844316,
+        "precision": 0.17993527508090615,
+        "recall": 0.14359504132231404,
+        "f1": 0.15972421717897156,
+        "brier": 0.057179433685620736,
+        "confusion_matrix": {
+          "tn": 28947,
+          "fp": 1267,
+          "fn": 1658,
+          "tp": 278
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    },
+    "random_forest_threshold_only": {
+      "validation": {
+        "threshold": 0.13,
+        "roc_auc": 0.6986510912723571,
+        "pr_auc": 0.31379810205768294,
+        "precision": 0.2952894791450508,
+        "recall": 0.4730718085106383,
+        "f1": 0.36361313402325285,
+        "brier": 0.12023649152315118,
+        "confusion_matrix": {
+          "tn": 14223,
+          "fp": 3396,
+          "fn": 1585,
+          "tp": 1423
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.13,
+      "threshold_cost": 0.09,
+      "fit_seconds": 8.5,
+      "test": {
+        "threshold": 0.13,
+        "roc_auc": 0.7260788247006067,
+        "pr_auc": 0.1346502299309719,
+        "precision": 0.10614730046948356,
+        "recall": 0.7474173553719008,
+        "f1": 0.18589414182939362,
+        "brier": 0.05906118116273932,
+        "confusion_matrix": {
+          "tn": 18029,
+          "fp": 12185,
+          "fn": 489,
+          "tp": 1447
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    },
+    "xgboost_threshold_only": {
+      "validation": {
+        "threshold": 0.11,
+        "roc_auc": 0.7108105233953191,
+        "pr_auc": 0.3076346803174578,
+        "precision": 0.2874779541446208,
+        "recall": 0.5418882978723404,
+        "f1": 0.375662595067988,
+        "brier": 0.11930561810731888,
+        "confusion_matrix": {
+          "tn": 13579,
+          "fp": 4040,
+          "fn": 1378,
+          "tp": 1630
+        },
+        "positive_rate": 0.14582828331798128
+      },
+      "threshold_f1": 0.11,
+      "threshold_cost": 0.07,
+      "fit_seconds": 2.8,
+      "test": {
+        "threshold": 0.11,
+        "roc_auc": 0.6962963522055071,
+        "pr_auc": 0.12156620553443799,
+        "precision": 0.09799184659519855,
+        "recall": 0.6704545454545454,
+        "f1": 0.17099196416809379,
+        "brier": 0.05867200717329979,
+        "confusion_matrix": {
+          "tn": 18266,
+          "fp": 11948,
+          "fn": 638,
+          "tp": 1298
+        },
+        "positive_rate": 0.06021772939346812
+      }
+    }
+  },
+  "calibration_test": {
+    "prob_pred": [
+      0.07407287224280198,
+      0.09154720850868235,
+      0.1015051422814058,
+      0.11019094959860766,
+      0.11872032974203468,
+      0.12761900935756218,
+      0.13735919817013342,
+      0.14879544862502642,
+      0.16403397647775367,
+      0.1976349577687438
+    ],
+    "prob_true": [
+      0.009953343701399688,
+      0.018040435458786936,
+      0.0223950233281493,
+      0.029237947122861586,
+      0.03576982892690513,
+      0.047900466562986,
+      0.06687402799377916,
+      0.09300155520995335,
+      0.12628304821150854,
+      0.15272161741835147
+    ]
+  },
+  "risk_thresholds": {
+    "medium": 0.1273,
+    "high": 0.1671
+  },
+  "risk_thresholds_note": "Derived from validation-set probability quantiles (75th / 92nd); configurable in the dashboard.",
+  "probability_distribution_test": {
+    "min": 0.03965798844624856,
+    "p50": 0.12302413770704665,
+    "p90": 0.1747144732914021,
+    "p99": 0.22450012019821258,
+    "max": 0.2720957017028077
+  },
+  "cost_assumptions": {
+    "cost_of_late_delivery": 1200.0,
+    "cost_of_false_alert": 30.0,
+    "cost_of_intervention": 50.0,
+    "intervention_effectiveness": 0.6
+  },
+  "feature_columns": [
+    "order_purchase_month",
+    "order_purchase_week",
+    "order_purchase_day",
+    "order_purchase_weekday",
+    "order_purchase_hour",
+    "order_purchase_quarter",
+    "is_weekend",
+    "estimated_lead_time_days",
+    "shipping_limit_days",
+    "lead_time_slack_days",
+    "lead_time_ratio",
+    "distance_per_promised_day",
+    "total_order_value",
+    "total_freight_value",
+    "freight_ratio",
+    "item_count",
+    "unique_product_count",
+    "seller_count",
+    "max_item_price",
+    "product_weight_g",
+    "product_volume_cm3",
+    "distance_km",
+    "same_state",
+    "customer_zip_code_prefix",
+    "seller_hist_orders",
+    "seller_hist_delay_rate",
+    "seller_hist_on_time_rate",
+    "seller_hist_avg_delivery_days",
+    "seller_hist_avg_freight",
+    "seller_hist_avg_delay_days",
+    "seller_orders_last_30_days",
+    "seller_orders_last_90_days",
+    "seller_workload_surge",
+    "category_hist_delay_rate",
+    "customer_state_hist_delay_rate",
+    "route_hist_delay_rate",
+    "platform_orders_last_30_days",
+    "platform_hist_delay_rate",
+    "product_category",
+    "customer_state",
+    "seller_state"
+  ],
+  "leakage_policy": "Only order-confirmation-time information is used. Delivery timestamps, review scores and post-delivery status are excluded from features; historical seller/category/route statistics use only orders already delivered before the current purchase time."
+}
