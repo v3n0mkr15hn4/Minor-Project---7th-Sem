@@ -2,13 +2,13 @@
 
 The persisted artefact is an sklearn ``Pipeline`` (preprocessor + classifier),
 so explanations are computed on the *transformed* matrix and mapped back to
-readable feature names. Tree models use ``TreeExplainer``; a linear final model
+readable feature names. Tree models use ``TreeExplainer`` or ``Explainer``; a linear final model
 falls back to ``LinearExplainer``.
 """
+
 from __future__ import annotations
 
 from functools import lru_cache
-
 import numpy as np
 import pandas as pd
 import shap
@@ -78,34 +78,53 @@ def pretty_name(raw: str) -> str:
 
 @lru_cache(maxsize=1)
 def _explainer():
-    """Build the SHAP explainer once, with a background sample of real orders."""
+    """Build the SHAP explainer once, using a background sample of real orders."""
     model = load_model()
     prep = model.named_steps["prep"]
     clf = model.named_steps["clf"]
     data = load_dataset()
-    background = prep.transform(
-        data[FEATURE_COLUMNS].sample(
-            min(BACKGROUND_SIZE, len(data)), random_state=42
-        )
-    )
+
+    sample_size = min(BACKGROUND_SIZE, len(data))
+    background_raw = data[FEATURE_COLUMNS].sample(sample_size, random_state=42)
+    background = prep.transform(background_raw)
+
+    if hasattr(background, "toarray"):
+        background = background.toarray()
+
     names = [pretty_name(c) for c in prep.get_feature_names_out()]
+
     try:
-        explainer = shap.TreeExplainer(clf)
+        explainer = shap.TreeExplainer(clf, data=background)
         kind = "tree"
     except Exception:
-        explainer = shap.LinearExplainer(clf, background)
-        kind = "linear"
+        try:
+            explainer = shap.LinearExplainer(clf, background)
+            kind = "linear"
+        except Exception:
+            explainer = shap.Explainer(clf, background)
+            kind = "general"
+
     return explainer, kind, prep, names
 
 
-def _shap_matrix(values) -> np.ndarray:
-    """Normalise SHAP output shapes to a 2-D (rows x features) array for class 1."""
-    arr = np.asarray(values)
-    if arr.ndim == 3:  # (rows, features, classes) or (classes, rows, features)
+def _shap_matrix(explainer, X) -> np.ndarray:
+    """Extract and normalise SHAP values to a 2-D array (rows x features) for the positive class."""
+    shap_output = explainer(X) if callable(explainer) else explainer.shap_values(X)
+
+    if hasattr(shap_output, "values"):
+        vals = shap_output.values
+    else:
+        vals = shap_output
+
+    arr = np.asarray(vals)
+
+    # Handle 3D array outputs: (samples, features, classes) or (classes, samples, features)
+    if arr.ndim == 3:
         if arr.shape[-1] == 2:
             arr = arr[:, :, 1]
-        else:
+        elif arr.shape[0] == 2:
             arr = arr[1]
+
     return arr
 
 
@@ -113,11 +132,18 @@ def explain_features(features: pd.DataFrame) -> pd.DataFrame:
     """Per-feature SHAP contributions for one order (positive = pushes to late)."""
     explainer, _kind, prep, names = _explainer()
     X = prep.transform(features[FEATURE_COLUMNS])
-    contrib = _shap_matrix(explainer.shap_values(X))[0]
+
+    if hasattr(X, "toarray"):
+        X = X.toarray()
+
+    contrib = _shap_matrix(explainer, X)[0]
+
+    raw_values = np.asarray(X)[0]
+
     out = pd.DataFrame(
         {
             "feature": names,
-            "value": np.asarray(X)[0],
+            "value": raw_values,
             "shap_value": contrib,
         }
     )
@@ -138,12 +164,17 @@ def global_importance(sample_size: int = 500) -> pd.DataFrame:
     """Mean |SHAP| across a random sample of scored orders."""
     explainer, _kind, prep, names = _explainer()
     data = load_dataset()
-    sample = data[FEATURE_COLUMNS].sample(
-        min(sample_size, len(data)), random_state=7
-    )
+    sample = data[FEATURE_COLUMNS].sample(min(sample_size, len(data)), random_state=7)
     X = prep.transform(sample)
-    contrib = _shap_matrix(explainer.shap_values(X))
+
+    if hasattr(X, "toarray"):
+        X = X.toarray()
+
+    contrib = _shap_matrix(explainer, X)
     imp = pd.DataFrame(
-        {"feature": names, "mean_abs_shap": np.abs(contrib).mean(axis=0)}
+        {
+            "feature": names,
+            "mean_abs_shap": np.abs(contrib).mean(axis=0),
+        }
     )
     return imp.sort_values("mean_abs_shap", ascending=False).reset_index(drop=True)
