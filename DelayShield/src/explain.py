@@ -108,23 +108,15 @@ def _explainer():
 
 
 def _shap_matrix(explainer, X) -> np.ndarray:
-    """Extract and normalise SHAP values to a 2-D array (rows x features) for the positive class."""
     shap_output = explainer(X) if callable(explainer) else explainer.shap_values(X)
-
     if hasattr(shap_output, "values"):
         vals = shap_output.values
     else:
         vals = shap_output
 
-    arr = np.asarray(vals)
-
-    # Handle 3D array outputs: (samples, features, classes) or (classes, samples, features)
-    if arr.ndim == 3:
-        if arr.shape[-1] == 2:
-            arr = arr[:, :, 1]
-        elif arr.shape[0] == 2:
-            arr = arr[1]
-
+    arr = np.array(vals)
+    if arr.ndim == 3:  # Binary classification 3D shape (samples, features, classes)
+        arr = arr[:, :, 1]
     return arr
 
 
